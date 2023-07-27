@@ -82,66 +82,66 @@ void	put_square(t_test * test, int x, int y, int color)
 	}
 }
 
-// void	put_player(t_test *test, int color)
-// {
-// 	float teta = 0;
-// 	float x,y;
-// 	float t_rad;
-// 	while (teta < 360)
-// 	{
-// 		x = test->x, y = test->y;
-// 		t_rad = M_PI * teta / 180;
-// 		while (sqrt(pow(x - test->x, 2) + pow(y - test->y, 2)) < 10)
-// 		{
-// 			my_mlx_put(test, x, y, color);
-// 			x += cos(t_rad);
-// 			y -= sin(t_rad);
-// 		}
-// 		teta++;
-// 	}
-// 	x = test->x, y = test->y;
-// 	t_rad = M_PI * test->teta / 180;
-// 	for (int i = 0; i < 20 ; i++)
-// 	{
-// 		my_mlx_put(test,x,y,color);
-// 		x += cos(t_rad);
-// 		y -= sin(t_rad);
-// 	}
- //}
-
 void	put_player(t_test *test, int color)
 {
-	float	rad;
-	float	x;
-	float	y;
-	float	teta;
-
-	teta = 0;
+	float teta = 0;
+	float x,y;
+	float t_rad;
 	while (teta < 360)
 	{
-		x = test->x;
-		y = test->y;
- 		rad = M_PI * teta / 180;
-		while (sqrt(pow(x - test->x, 2) + pow(y - test->y, 2)) < 5)
+		x = test->x, y = test->y;
+		t_rad = M_PI * teta / 180;
+		while (sqrt(pow(x - test->x, 2) + pow(y - test->y, 2)) < 10)
 		{
 			my_mlx_put(test, x, y, color);
-			x += cos(rad);
-			y -= sin(rad);
+			x += cos(t_rad);
+			y -= sin(t_rad);
 		}
 		teta++;
 	}
-	int	i;
-
-	i = 0;
-	x = test->x;
-	y = test->y;
-	while (i++ < 10)
+	x = test->x, y = test->y;
+	t_rad = M_PI * test->teta / 180;
+	for (int i = 0; i < 20 ; i++)
 	{
-		my_mlx_put(test, x, y, color);
-		x += cos(rad);
-		y -= sin(rad);
+		my_mlx_put(test,x,y,color);
+		x += cos(t_rad);
+		y -= sin(t_rad);
 	}
-}
+ }
+
+// void	put_player(t_test *test, int color)
+// {
+// 	float	rad;
+// 	float	x;
+// 	float	y;
+// 	float	teta;
+
+// 	teta = 0;
+// 	while (teta < 360)
+// 	{
+// 		x = test->x;
+// 		y = test->y;
+//  		rad = M_PI * teta / 180;
+// 		while (sqrt(pow(x - test->x, 2) + pow(y - test->y, 2)) < 5)
+// 		{
+// 			my_mlx_put(test, x, y, color);
+// 			x += cos(rad);
+// 			y -= sin(rad);
+// 		}
+// 		teta++;
+// 	}
+// 	int	i;
+
+// 	i = 0;
+// 	x = test->x;
+// 	y = test->y;
+// 	while (i++ < 10)
+// 	{
+// 		my_mlx_put(test, x, y, color);
+// 		x += cos(rad);
+// 		y -= sin(rad);
+// 	}
+// }
 
 void init_var(t_test * test)
 {
@@ -298,10 +298,10 @@ int main(int ac, char **av)
 	 	&test->img->line_length, &test->img->endian);
 	init_var(test);
 	f1(test);
-	//put_player(test, 16711680);
-	// mlx_hook(test->win, 17, 0, ft_exit, NULL);
-	// mlx_hook(test->win, 2, 0,presse_key, test);
-	// mlx_hook(test->win, 3, 0,relesse_key, test);
-	// mlx_loop_hook(test->mlx, motion, test);
+	put_player(test, 16711680);
+	mlx_hook(test->win, 17, 0, ft_exit, NULL);
+	mlx_hook(test->win, 2, 0,presse_key, test);
+	mlx_hook(test->win, 3, 0,relesse_key, test);
+	mlx_loop_hook(test->mlx, motion, test);
 	mlx_loop(test->mlx);
 }

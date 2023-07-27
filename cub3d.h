@@ -6,7 +6,7 @@
 /*   By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:04:51 by ayylaaba          #+#    #+#             */
-/*   Updated: 2023/07/25 17:40:27 by ayylaaba         ###   ########.fr       */
+/*   Updated: 2023/07/27 10:59:45 by ayylaaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,25 +36,35 @@ typedef struct creat_data
 
 typedef struct creat_picture
 {
-    t_data  *data;
-    float         x_p;
-    float         y_p;
+    t_data      *data;
+    char        *map;
+    char        **map_v3;
+    char        **map_v2;
+    float       x_p;
+    float       y_p;
+    float       angl;
+    float       r_left;
+    float       r_right;
+    float       ray_pos;
     int         color;
     int         wigth;
     int         hight;
     void        *image;
-    void    *ptr;
-    void    *wind;
-    void    *mlx;
-    int     y;
-    int     x;
-    int     len;
-    int     end;
-    int     bit_pixl;
-    void    *image_adrr;
-    char    *adrr;
+    void        *ptr;
+    void        *wind;
+    void        *mlx;
+    int         y;
+    int         x;
+    int         len;
+    int         end;
+    int         deta;
+    int         bit_pixl;
+    void        *image_adrr;
+    char        *adrr;
 }	t_picture;
 
+void    rotation(t_picture *data);
+void    init_player(char **map, t_picture  *test);
 char	*get_next_line(int fd);
 int	    ft_sreach(char *str);
 int	    ft_strlen(char *str);
@@ -74,7 +84,9 @@ int     check_character(char **s);
 int     check_color(char **map);
 int     check_text_ext(char **map);
 char    *get_content(char *str, char c);
-
-
+void    move_up(t_picture *data);
+void    move_down(t_picture *data);
+void    move_right(t_picture *data);
+void    move_left(t_picture *data);
 
 #endif
