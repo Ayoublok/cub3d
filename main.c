@@ -6,7 +6,7 @@
 /*   By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:50:00 by ayylaaba          #+#    #+#             */
-/*   Updated: 2023/08/01 15:35:01 by ayylaaba         ###   ########.fr       */
+/*   Updated: 2023/08/04 17:11:33 by ayylaaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,6 @@ void	my_put_pixl(t_picture *test, int x, int y, int color)
 		return ;
 	hold_pic_addr = test->adrr + (y * test->len + x * (test->bit_pixl / 8));
 	*(unsigned int *)hold_pic_addr = color;
-}
-
-void	draw_wall(t_picture * data)
-{
-	int	start;
-	int	end;
-	
-	start = 320 - (data->wall_tall / 2);
-	end = start + data->wall_tall;
-	while (start < end)
-	{
-		my_put_pixl(data, data->f, start, 0xffffff);
-		start++;
-	}
 }
 
 char	*get_content(char *str, char c)
@@ -102,22 +88,6 @@ int	check_text_ext(char **map)
 	return (0);
 }
 
-
-void	draw_squar(t_picture *test, int old_x, int old_y, int color)
-{
-	int	x;
-	int	y;
-
-	x = old_x;
-	while (x <= old_x + 64)
-	{
-		y = old_y;
-		while (y <= old_y + 64)
-			my_put_pixl(test, x, y++, color);
-		x++;
-	}
-}
-
 int	is_wall(char **map, int x, int y)
 {
 	if (map[y][x] == '1')
@@ -125,86 +95,12 @@ int	is_wall(char **map, int x, int y)
 	return (0);
 }
 
-void	put_player(t_picture *test, int color, char **map)
-{
-	float	rad;
-	float	x;
-	float	y;
-	float	angl;
-
-	angl = 0;
-	(void)color;
-	//draw player;
-	// while (angl < 360)
-	// {
-	// 	rad = angl * M_PI / 180;
-	// 	x = test->x_p;
-	// 	y = test->y_p;
-	// 	while ((sqrt(pow(test->x_p - x, 2) + pow(test->y_p - y, 2)) < 5))
-	// 	{
-	// 		my_put_pixl(test, x, y, color);
-	// 		x += cos(rad);
-	// 		y -= sin(rad);
-	// 	}
-	// 	angl++;
-	// }
-	//casting rays;
-	test->ray_distance = 0;
-	angl = test->deta - 30;  //60 degree;
-	test->color = 0x0ff0000; //red;
-	test->f = 0;
-	while (test->f < 640)
-	{
-		x = test->x_p;
-		y = test->y_p;
-		rad = angl * M_PI / 180;
-		test->ray_distance = 0;
-		while (!is_wall(map, x / 64, y / 64)) //check if the ray hit a wall;
-		{
-			//my_put_pixl(test, x, y, test->color);
-			test->ray_distance++;
-			// printf("ray distance: %d\n", test->ray_distance);
-			x += cos(rad);
-			y -= sin(rad);
-		}
-		angl+= 0.09375;
-		//test->new_ray_distance = test->ray_distance * cos(test->deta - 30);
-		//printf ("distance = %f\n", test->ray_distance);
-		test->tan_angl = (test->deta + 30) / 2;
-		test->dist_p_screen = 320 / tan(test->tan_angl);
-		test->wall_tall = (64 / test->ray_distance) * 277;
-		draw_wall(test);
-		test->f++;
-	}
-}
-
 void	draw_map(char **map, t_picture *test)
 {
-	// int	x;
-	// int	y;
-
-	// y = 0;
-	// while (map[y])
-	// {
-	// 	x = 0;
-	// 	while (map[y][x])
-	// 	{
-	// 		if (map[y][x] == '1')
-	// 			draw_squar(test, x * 64, y * 64, 0x000000CD);
-	// 		if (map[y][x] == '0')
-	// 			draw_squar(test, x * 64, y * 64, 30778801);
-	// 		x++;
-	// 	}
-	// 	y++;
-	// }
-	mlx_destroy_image(test->ptr, test->image_adrr);
 	test->image_adrr = mlx_new_image(test->ptr, 640, 640);
 	test->adrr = mlx_get_data_addr(test->image_adrr, &test->bit_pixl,
-			&test->len, &test->end);
-	put_player(test, 0x00FDFD55, map);
-	//printf ("------> x == %d, y == %d, color == %d\n", test->data->x,
-	//test->data->y, test->data->color);
-	// printf ("123\n");
+	 		&test->len, &test->end);
+	inital_draw_wall(test, map);
 	mlx_put_image_to_window(test->ptr, test->wind, test->image_adrr, 0, 0);
 }
 
@@ -293,24 +189,21 @@ int	main(int ac, char **av)
 {
 	t_picture	*test;
 
-	test = initialize_structure(ac, av);
+	test = initialize_structure(ac, av); // intial the all stract's member.
 	if (check_map_extantion(test->map) || check_character(test->map_v2)
 		|| check_wall_text(test->map_v2) || check_double_element(test->map_v2))
 		ft_perror();
-	init_player(test->map_v3, test);
+	init_player(test->map_v3, test); // get player pos (x, y).
 	test->ptr = mlx_init();
 	test->wind = mlx_new_window(test->ptr, 640, 640, "cub3d");
 	test->image_adrr = mlx_new_image(test->ptr, 640, 640);
-	test->adrr = mlx_get_data_addr(test->image_adrr, &test->bit_pixl,
-			&test->len, &test->end);
+	test->adrr = mlx_get_data_addr(test->image_adrr, &test->bit_pixl, &test->len, &test->end); // this fun 
 	test->r_left = 0;
 	test->r_right = 0;
-	draw_map(test->map_v3, test);
-	//draw_player(map_v3, test);
+	draw_map(test->map_v3, test); // start from here.
 	mlx_hook(test->wind, 17, 0, ft_exit, NULL);
 	mlx_hook(test->wind, 2, 0, give_key, test);
 	mlx_hook(test->wind, 3, 0, key_released, test);
 	mlx_loop_hook(test->ptr, animate_moves, test);
-	// mlx_loop_hook(test->wind, 2, 0, rotation, test);
 	mlx_loop(test->ptr);
 }

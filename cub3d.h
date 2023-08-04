@@ -6,7 +6,7 @@
 /*   By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:04:51 by ayylaaba          #+#    #+#             */
-/*   Updated: 2023/08/01 15:21:40 by ayylaaba         ###   ########.fr       */
+/*   Updated: 2023/08/04 20:55:45 by ayylaaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ typedef struct creat_picture
 	char	**map_v2;
 	double	x_p;
 	double	y_p;
-	float	angl;
-	float	r_left;
-	float	r_right;
-	float	ray_pos;
-	float	wall_tall;
-	float	dist_p_screen;
-	float	tan_angl;
+	double	angl;
+	double	r_left;
+	double	r_right;
+	double	ray_pos;
+	double	wall_tall;
+	double	dist_p_screen;
+	double	tan_angl;
 	int		color;
 	int		wigth;
 	int		hight;
@@ -60,8 +60,8 @@ typedef struct creat_picture
 	int		x;
 	int		len;
 	int		end;
-	float	deta;
-	float teta_ptr;
+	double	deta;
+	double 	teta_ptr;
 	int		bit_pixl;
 	void	*image_adrr;
 	char	*adrr;
@@ -71,7 +71,7 @@ typedef struct creat_picture
 	int		m_right;
 	int		speed;
 	int		move_check;
-	double 	ray_distance;
+	double	ray_distance;
 	double 	new_ray_distance;
 	int 	player_size;
 	int		f;
@@ -103,5 +103,8 @@ void		move_up(t_picture *data);
 void		move_down(t_picture *data);
 void		move_right(t_picture *data);
 void		move_left(t_picture *data);
+void		my_put_pixl(t_picture *test, int x, int y, int color);
+void		inital_draw_wall(t_picture *data, char **map);
+
 
 #endif
