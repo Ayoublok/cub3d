@@ -6,7 +6,7 @@
 /*   By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:04:51 by ayylaaba          #+#    #+#             */
-/*   Updated: 2023/08/04 20:55:45 by ayylaaba         ###   ########.fr       */
+/*   Updated: 2023/08/13 12:06:08 by ayylaaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,19 @@ typedef struct creat_data
 
 typedef struct creat_picture
 {
+	int		old_s;
 	t_data	*data;
+	char	dir_h;
+	char	dir_v;
 	char	*map;
 	char	**map_v3;
 	char	**map_v2;
-	double	x_p;
-	double	y_p;
-	double	angl;
-	double	r_left;
-	double	r_right;
-	double	ray_pos;
-	double	wall_tall;
-	double	dist_p_screen;
-	double	tan_angl;
+	float	x_p;
+	float	y_p;
+	float	angl;
+	float	r_left;
+	float	r_right;
+	float	ray_pos;
 	int		color;
 	int		wigth;
 	int		hight;
@@ -60,8 +60,8 @@ typedef struct creat_picture
 	int		x;
 	int		len;
 	int		end;
-	double	deta;
-	double 	teta_ptr;
+	float	deta;
+	float	teta_ptr;
 	int		bit_pixl;
 	void	*image_adrr;
 	char	*adrr;
@@ -71,13 +71,25 @@ typedef struct creat_picture
 	int		m_right;
 	int		speed;
 	int		move_check;
-	double	ray_distance;
-	double 	new_ray_distance;
-	int 	player_size;
+	int		ray_distance;
+	int		player_size;
+	int		middle_ray;
+	int		wall_check;
 	int		f;
+	double	dist_p_screen;
+	double	wall_tall;
+	float	tx_hor;
+	float	ty_hor;
+	float	ray_distance_hor;
+	float	ray_distance_hor_store;
+	float	tx_ver;
+	float	ty_ver;
+	float	ray_distance_ver;
+	float	new_ray_distance;
+	float	ray_distance_ver_store;
 }			t_picture;
 
-int			is_wall(char **map, int x, int y);
+int			is_wall(t_picture *data, float x, float y);
 void		rotation(t_picture *data);
 void		init_player(char **map, t_picture *test);
 char		*get_next_line(int fd);
@@ -103,8 +115,7 @@ void		move_up(t_picture *data);
 void		move_down(t_picture *data);
 void		move_right(t_picture *data);
 void		move_left(t_picture *data);
-void		my_put_pixl(t_picture *test, int x, int y, int color);
-void		inital_draw_wall(t_picture *data, char **map);
-
+t_picture	*ver_int(t_picture *data, float angle, float x_i, float y_i);
+t_picture	*hor_int(t_picture *data, float angle, float x_i, float y_i);
 
 #endif

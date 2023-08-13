@@ -3,16 +3,18 @@
 #                                                         :::      ::::::::    #
 #    makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+         #
+#    By: mhassani <mhassani@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/14 19:02:08 by ayylaaba          #+#    #+#              #
-#    Updated: 2023/08/02 09:42:40 by ayylaaba         ###   ########.fr        #
+#    Updated: 2023/08/12 19:28:25 by mhassani         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = cub3d
 
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
+CC = cc -O3
+
+CFLAGS =  -fsanitize=address #-Wall -Wextra -Werror
 
 SRCS = 	main.c \
 		get_next_line.c	\
@@ -27,7 +29,7 @@ SRCS = 	main.c \
 		parcing_color.c \
 		parcing_player_texture.c \
 		move_player.c \
-		draw_wall.c \
+		intersection.c
 
 OBJ = ${SRCS:.c=.o}
 
@@ -36,7 +38,7 @@ OBJ = ${SRCS:.c=.o}
 all : ${NAME}
 
 ${NAME} : ${OBJ}
-	$(CC) ${CFLAGS} $(OBJ) -lmlx -framework OpenGL -framework AppKit -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) -lmlx -framework OpenGL -framework AppKit -o $(NAME)
 
 #bonus : ${OBJBONUS} $(CC) $(OBJBONUS) -lmlx -framework OpenGL -framework AppKit -o $(NAME)
 
