@@ -6,7 +6,7 @@
 /*   By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 14:50:21 by ayylaaba          #+#    #+#             */
-/*   Updated: 2023/08/15 19:08:04 by ayylaaba         ###   ########.fr       */
+/*   Updated: 2023/08/15 19:49:42 by ayylaaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,18 @@ void	draw_wall(t_picture * data, t_imgs *imgs, int s)
 		x = (int)(imgs->width * (data->tx_hor / 64)) % imgs->width;	
 	if (s)
 		x = (int)(imgs->width * (data->ty_ver / 64)) % imgs->width;
+	for(int i = 0; i < data->start ; i++)
+	{
+		my_put_pixl(data, data->f , i , 0);
+	}
 	while (data->start < end && data->start < 640)
 	{
 		my_put_pixl(data, data->f , data->start , get_color(imgs,x,y));
 		data->start++;
 		y += grid;
+	}
+	for(int i = end; i < 640 ; i++)
+	{
+		my_put_pixl(data, data->f , i , 0);
 	}
 }
