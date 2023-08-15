@@ -6,7 +6,7 @@
 /*   By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:50:00 by ayylaaba          #+#    #+#             */
-/*   Updated: 2023/08/13 12:08:10 by ayylaaba         ###   ########.fr       */
+/*   Updated: 2023/08/15 19:18:06 by ayylaaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,16 @@ int	ft_exit(void)
 {
 	write(1, "safi barka elik \n", 17);
 	exit(0);
+}
+
+void	my_put_pixl(t_picture *test, int x, int y, int color)
+{
+	char	*hold_pic_addr;
+
+	if (x < 0 || x >= 640 || y < 0 || y >= 640)
+		return ;
+	hold_pic_addr = test->adrr + (y * test->len + x * (test->bit_pixl / 8));
+	*(unsigned int *)hold_pic_addr = color;
 }
 
 char	*get_content(char *str, char c)
@@ -78,15 +88,6 @@ int	check_text_ext(char **map)
 	return (0);
 }
 
-void	my_put_pixl(t_picture *test, int x, int y, int color)
-{
-	char	*hold_pic_addr;
-
-	if (x < 0 || x >= 640 || y < 0 || y >= 640)
-		return ;
-	hold_pic_addr = test->adrr + (y * test->len + x * (test->bit_pixl / 8));
-	*(unsigned int *)hold_pic_addr = color;
-}
 
 void	draw_squar(t_picture *test, int old_x, int old_y, int color)
 {
@@ -166,137 +167,6 @@ void	draw_vertical_ray(t_picture *data, float angle)
 	}
 }
 
-t_picture	*vertical_intersections(t_picture *data, float angle, float x, float y)
-{
-	float	rad;
-	
-	rad = angle * M_PI / 180;
-	if(cos(rad) == 0)
-	{
-		data->ray_distance_ver = 100000;
-		return data;
-	}
-	else if (cos(rad) < 0) // player look left
-	{
-		data->tx_ver = ((int)data->x_p % 64);
-		data->ty_ver = data->tx_ver * tan(rad);
-		data->ray_distance_ver = sqrt(pow(data->tx_ver, 2) + pow(data->ty_ver, 2));
-		x = data->x_p + (cos(rad) * data->ray_distance_ver);
-		y = data->y_p - (sin(rad) * data->ray_distance_ver);
-		data->tx_ver = 64;
-		data->ty_ver = data->tx_ver * tan(rad);
-		data->ray_distance_ver = sqrt(pow(data->tx_ver, 2) + pow(data->ty_ver, 2));
-		while (!is_wall(data, (x / 64) - 1, y / 64))
-		{
-			x = x + (cos(rad) * data->ray_distance_ver);
-			y = y - (sin(rad) * data->ray_distance_ver);
-		}
-		data->ray_distance_ver = sqrt(pow(x - data->x_p, 2) + pow(y - data->y_p, 2));
-	}
-	else if (cos(rad) > 0) // look right 
-	{
-		data->tx_ver = 64 - ((int)data->x_p % 64);
-		data->ty_ver = data->tx_ver * tan(rad);
-		data->ray_distance_ver = sqrt(pow(data->tx_ver, 2) + pow(data->ty_ver, 2));
-			x = data->x_p + (cos(rad) * data->ray_distance_ver);
-			y = data->y_p - (sin(rad) * data->ray_distance_ver);
-		data->tx_ver = 64;
-		data->ty_ver = data->tx_ver * tan(rad);
-		data->ray_distance_ver = sqrt(pow(data->ty_ver, 2) + pow(data->tx_ver, 2));
-		while (!is_wall(data, (x / 64), (y / 64)))
-		{
-			x = x + (cos(rad) * data->ray_distance_ver);
-			y = y - (sin(rad) * data->ray_distance_ver);
-		}
-		data->ray_distance_ver = sqrt(pow(x - data->x_p, 2) + pow(y - data->y_p, 2));
-	}
-	// printf("data->ray_distance_ver: %f, x: %f, y: %f\n", data->ray_distance_ver, x, y);
-	return (data);
-}
-
-t_picture	*horizontal_intersections(t_picture *data, float angle, float x, float y) //done;
-{
-	float rad;
-	
-	rad = angle * M_PI / 180;
-	if(sin(rad) == 0)
-	{
-		data->ray_distance_hor = 100000;
-		return data;
-	}
-	else if (sin(rad) < 0) // player look down
-	{
-		data->ty_hor = 64 - ((int)(data->y_p) % 64);
-		data->tx_hor = data->ty_hor / tan(rad);
-		data->ray_distance_hor = sqrt(pow(data->tx_hor, 2) + pow(data->ty_hor, 2));
-			x = data->x_p + (cos(rad) * data->ray_distance_hor);
-			y = data->y_p - (sin(rad) * data->ray_distance_hor);
-		data->ty_hor = 64;
-		data->tx_hor = data->ty_hor / tan(rad);
-		data->ray_distance_hor = sqrt(pow(data->tx_hor, 2) + pow(data->ty_hor, 2));
-		while (!is_wall(data, (x / 64), (y / 64)))
-		{
-			x += (cos(rad) * data->ray_distance_hor);
-			y -= (sin(rad) * data->ray_distance_hor);
-		}
-		data->ray_distance_hor = sqrt(pow(x - data->x_p, 2) + pow(y - data->y_p, 2));
-		// printf("data->ray_distance_hor: %f\n", data->ray_distance_hor);
-	}
-	else if (sin(rad) > 0) //player look up;
-	{
-		printf("upppp\n");
-		data->ty_hor = ((int)data->y_p % 64);
-		data->tx_hor = data->ty_hor / tan(rad);
-		data->ray_distance_hor = sqrt(pow(data->tx_hor, 2) + pow(data->ty_hor, 2));
-		x = data->x_p + (cos(rad) * data->ray_distance_hor);
-		y = data->y_p - (sin(rad) * data->ray_distance_hor);
-		data->ty_hor = 64;
-		data->tx_hor = data->ty_hor / tan(rad);
-		data->ray_distance_hor = sqrt(pow(data->tx_hor, 2) + pow(data->ty_hor, 2)); // distance of seconde ray;
-		while (!is_wall(data, (x) / 64, (y / 64) - 1))
-		{
-			x += (cos(rad) * data->ray_distance_hor);
-			y -= (sin(rad) * data->ray_distance_hor);
-		}
-		data->ray_distance_hor = sqrt(pow(x - data->x_p, 2) + pow(y - data->y_p, 2));
-	}
-	// printf("data->ray_distance_hor: %f, x: %f, y: %f\n", data->ray_distance_hor, x, y);
-	return (data);
-}
-
-void	draw_wall(t_picture * data, int color)
-{
-	double		start;
-	double		end;
-
-	start = 320 - (data->wall_tall / 2);
-	end = start + data->wall_tall;
-
-	while (start < end)
-	{
-		my_put_pixl(data, data->f , start , color);
-		start++;
-	}
-}
-
-void	draw_walls(t_picture * data)
-{
-	int	s;
-
-	s = (data->ray_distance_hor > data->ray_distance_ver);
-	if (data->ray_distance_hor == data->ray_distance_ver)
-		s = data->old_s;
-	data->old_s = s;
-	if (data->dir_v == 'E' && s)
-		draw_wall(data, 0x033ff1);
-	if (data->dir_v == 'W' && s)
-		draw_wall(data, 0xa4b110);
-	if (data->dir_h == 'N' && !s)
-		draw_wall(data, 0xf54fff);
-	if (data->dir_h == 'S' && !s)
-		draw_wall(data, 0xf99f3f);
-}
-
 void	put_player(t_picture *test, int color)
 {
 	double	rad;
@@ -305,22 +175,6 @@ void	put_player(t_picture *test, int color)
 	double	angle;
 	double	cur_angl;
 
-	angle = 0;
-	//draw player;
-	while (angle < 360)
-	{
-		rad = angle * M_PI / 180;
-		x = test->x_p;
-		y = test->y_p;
-		while ((sqrt(pow(test->x_p - x, 2) + pow(test->y_p - y, 2)) < 5))
-		{
-			//my_put_pixl(test, x, y, color);
-			x += cos(rad);
-			y -= sin(rad);
-		}
-		angle++;
-	}
-	//casting rays;
 	test->color = 0x0ff0000; //red;
 	angle = test->deta + 30;
 	int i = 0;
@@ -328,20 +182,12 @@ void	put_player(t_picture *test, int color)
 	
 	while (test->f < 640)
 	{
-		// while(angle < test->deta + 30)
-		// {
 			hor_int(test, angle, x, y); // just to get distance horizontal
 			ver_int(test, angle, x, y); // just to get distance vertical
 			if (test->ray_distance_hor <= test->ray_distance_ver)
-			{
-				//draw_horizontal_ray(test, angle);
 				i = 1;
-			}
 			else if (test->ray_distance_ver <= test->ray_distance_hor)
-			{
-			//	draw_vertical_ray(test, angle);
 				i = 0;
-			}
 			cur_angl = (test->deta - angle);
 			if (!i)
 				test->new_ray_distance = test->ray_distance_ver * cos(((cur_angl) * M_PI / 180));
@@ -352,7 +198,6 @@ void	put_player(t_picture *test, int color)
 			draw_walls(test);
 			test->f++;
 			angle -= 64.0 / 640.0;
-	//	}
 	}
 }
 
@@ -387,21 +232,22 @@ void	draw_map(char **map, t_picture *test)
 
 int	give_key(int key, t_picture *test)
 {
-	if (key == 123)
+	if (key == 65361)
 		test->r_left = 1;
-	if (key == 124)
+	if (key == 65363)
 		test->r_right = 1;
-	if (key == 13 || key == 126) //w
+	if (key == 119) //w
 		test->m_up = 1;
-	if (key == 1 || key == 125) //s
+	if (key == 115) //s
 		test->m_down = 1;
-	if (key == 2) //d
+	if (key == 100) //d
 		test->m_left = 1;
-	if (key == 0)
+	if (key == 97)
 		test->m_right = 1;
-	if (key == 53) //esc
+	if (key == 65307) //esc
 	{
 		write(1, "thella ;)\n", 10);
+		free(test);
 		exit(0);
 	}
 	return (0);
@@ -421,17 +267,17 @@ int	animate_moves(t_picture *test)
 
 int	key_released(int key, t_picture *test)
 {
-	if (key == 123)
+	if (key == 65361)
 		test->r_left = 0;
-	else if (key == 124)
+	else if (key == 65363)
 		test->r_right = 0;
-	else if (key == 13 || key == 126)
+	else if (key == 119)
 		test->m_up = 0;
-	else if (key == 1 || key == 125)
+	else if (key == 115)
 		test->m_down = 0;
-	else if (key == 2)
+	else if (key == 100)
 		test->m_left = 0;
-	else if (key == 0)
+	else if (key == 97)
 		test->m_right = 0;
 	return (0);
 }
@@ -510,15 +356,12 @@ int	main(int ac, char **av)
 			&test->len, &test->end);
 	test->r_left = 0;
 	test->r_right = 0;
+	init(test);
 	draw_map(test->map_v3, test);
-	// put_player(test, test->color);
+	put_player(test, test->color);
 	mlx_hook(test->wind, 17, 0, ft_exit, NULL);
-	mlx_hook(test->wind, 2, 0, give_key, test);
+	mlx_hook(test->wind, 2, 3, give_key, test);
 	mlx_hook(test->wind, 3, 0, key_released, test);
 	mlx_loop_hook(test->ptr, animate_moves, test);
-	// mlx_loop_hook(test->wind, 2, 0, rotation, test);
 	mlx_loop(test->ptr);
 }
-
-
-

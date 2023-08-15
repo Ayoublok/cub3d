@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_player.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhassani <mhassani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:35:05 by ayylaaba          #+#    #+#             */
-/*   Updated: 2023/08/12 18:28:22 by mhassani         ###   ########.fr       */
+/*   Updated: 2023/08/15 19:19:21 by ayylaaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	move_up(t_picture *data)
 void	move_down(t_picture *data)
 {
     double x = data->x_p,y = data->y_p;
-    data->ray_pos = (data->deta) * M_PI / 180;
+    data->ray_pos = (data->deta - 180) * M_PI / 180;
     x -= cos(data->ray_pos) * data->speed;
     y += sin(data->ray_pos) * data->speed;
 	if (!data->m_down)
@@ -106,10 +106,10 @@ void	rotation(t_picture *data)
         data->deta = 0;
 	if (data->r_left)
 	{
-		data->deta += 2;
+		data->deta += 0.3;
 	}
 	else if (data->r_right)
 	{
-		data->deta -= 2;
+		data->deta -= 0.3;
 	}
 }
