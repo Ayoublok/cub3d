@@ -6,7 +6,7 @@
 /*   By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:04:51 by ayylaaba          #+#    #+#             */
-/*   Updated: 2023/08/15 17:21:45 by ayylaaba         ###   ########.fr       */
+/*   Updated: 2023/08/15 19:29:56 by ayylaaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ typedef struct creat_picture
 	int		m_down;
 	int		m_left;
 	int		m_right;
-	int		speed;
+	float	speed;
 	int		move_check;
 	int		ray_distance;
 	int		player_size;
@@ -101,14 +101,17 @@ typedef struct creat_picture
 	float	tx_hor;
 	float	ty_hor;
 	float	ray_distance_hor;
-	float	ray_distance_hor_store;
 	float	tx_ver;
 	float	ty_ver;
 	float	ray_distance_ver;
 	float	new_ray_distance;
-	float	ray_distance_ver_store;
+	float	ray_distancee;
+	float	tx;
+	float	ty;
 }			t_picture;
 
+
+int	is_wall_move(t_picture *data, float x, float y);
 void		init(t_picture *data);
 void		my_put_pixl(t_picture *test, int x, int y, int color);
 void		draw_walls(t_picture *data);

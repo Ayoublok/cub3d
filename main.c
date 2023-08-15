@@ -6,7 +6,7 @@
 /*   By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:50:00 by ayylaaba          #+#    #+#             */
-/*   Updated: 2023/08/15 19:18:06 by ayylaaba         ###   ########.fr       */
+/*   Updated: 2023/08/15 19:29:48 by ayylaaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,29 @@ int	is_wall(t_picture *data, float x, float y)
 	return (0);
 }
 
+int	is_wall_move(t_picture *data, float x, float y)
+{
+	int	j;
+	int	i;
+
+	j = 0;
+	while (data->map_v3 && data->map_v3[j])
+		j++;
+	if (y >= j || x < 0 || y < 0)
+		return (1);
+	i = 0;
+	while (data->map_v3[(int)y] && data->map_v3[(int)y][(int)i])
+		i++;
+	if (x >= i - 1)
+		return 1;
+	int k = 0;
+	if (data->map_v3[(int)y][(int)x] == '1' && data->ray_distancee < 5)
+	{
+		return (1);
+	}
+	return (0);
+}
+
 void	draw_horizontal_ray(t_picture *data, float angle)
 {
 	int		i;
@@ -185,9 +208,19 @@ void	put_player(t_picture *test, int color)
 			hor_int(test, angle, x, y); // just to get distance horizontal
 			ver_int(test, angle, x, y); // just to get distance vertical
 			if (test->ray_distance_hor <= test->ray_distance_ver)
+			{
 				i = 1;
+				test->ray_distance = test->ray_distance_hor;
+				test->tx = test->tx_hor;
+				test->ty = test->ty_hor;
+			}
 			else if (test->ray_distance_ver <= test->ray_distance_hor)
+			{
 				i = 0;
+				test->ray_distance = test->ray_distance_ver;
+				test->tx = test->tx_ver;
+				test->ty = test->ty_ver;
+			}
 			cur_angl = (test->deta - angle);
 			if (!i)
 				test->new_ray_distance = test->ray_distance_ver * cos(((cur_angl) * M_PI / 180));
@@ -203,30 +236,10 @@ void	put_player(t_picture *test, int color)
 
 void	draw_map(char **map, t_picture *test)
 {
-	// int	x;
-	// int	y;
-	
-
-	// y = 0;
-	// while (map[y])
-	// {
-	// 	x = 0;
-	// 	while (map[y][x])
-	// 	{
-	// 		if (map[y][x] == '1')
-	// 			draw_squar(test, x * 64, y * 64, 0x000000CD);
-	// 		if (map[y][x] == '0')
-	// 			draw_squar(test, x * 64, y * 64, 30778801);
-	// 		x++;
-	// 	}
-	// 	y++;
-	// }
 	test->image_adrr = mlx_new_image(test->ptr, 640, 640);
 	test->adrr = mlx_get_data_addr(test->image_adrr, &test->bit_pixl,
 	 		&test->len, &test->end);
 	put_player(test, 0x00FDFD55);
-	//printf ("------> x == %d, y == %d, color == %d\n", test->data->x,
-	//test->data->y, test->data->color);
 	mlx_put_image_to_window(test->ptr, test->wind, test->image_adrr, 0, 0);
 }
 
@@ -255,7 +268,7 @@ int	give_key(int key, t_picture *test)
 
 int	animate_moves(t_picture *test)
 {
-	test->speed = 2;
+	test->speed = 0.5;
 	rotation(test);
 	move_up(test);
 	move_down(test);
