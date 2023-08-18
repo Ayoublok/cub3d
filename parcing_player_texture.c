@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parcing_player_texture.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhassani <mhassani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 16:44:57 by ayylaaba          #+#    #+#             */
-/*   Updated: 2023/08/07 22:53:53 by mhassani         ###   ########.fr       */
+/*   Updated: 2023/08/17 23:46:42 by ayylaaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int     check_double_element(char **map)
     int     count2;
     int     count3;
     int     count4;
+    int     all;
     char    **a;
     char    *trim;
 
@@ -51,7 +52,7 @@ int     check_double_element(char **map)
     while (map[i])
     {
         trim = ft_strtrim(map[i], " ");
-        if (trim[0] != 1)
+        if (trim[0] != '1')
         {
             a = ft_split(map[i], ' ');
             if (!ft_strcmp(a[0], "NO"))
@@ -61,47 +62,62 @@ int     check_double_element(char **map)
             else if (!ft_strcmp(a[0], "EA"))
                 count2++;
             else if (!ft_strcmp(a[0], "WE"))
+            {
+                printf("here\n");
                 count3++;
+            }
             else if (!ft_strcmp(a[0], "F") || !ft_strcmp(a[0], "C"))
                 count4++;
         }
         i++;
     }
-    if (count + count1 + count2 + count3 == 4 && count4 == 2)
-        return (0);
-    return (1);
+   // all = count + count1 + count2 + count3;
+    if (count + count1 + count2 + count3 != 4 || count4 != 2)
+        return (1);
+    return (0);
 }
 
 int     check_wall_text(char **src)
 {
     int i;
-    int j;
     int count;
     int count1;
     int count2;
     int count3;
+    int count4;
+    int count5;
     char    *trim;
 
     count1 = 0;
     count2 = 0;
     count3 = 0;
-    count = 0;
+    count4 = 0;
+    count5 = 0;
+    count  = 0;
     i = 0;
-    j = 0;
     while (src[i])
     {
         trim = ft_strtrim(src[i], " ");
-        if (trim[0] == 'N' && trim[1] == 'O')
-            count++;
-        else if (trim[0] == 'W' && trim[1] == 'E')
-            count1++;
-        else if (trim[0] == 'E' && trim[1] == 'A')
-            count2++;
-        else if (trim[0] == 'S' && trim[1] == 'O')
-            count3++;
+        if (trim[0] != '1')
+        {
+            if (trim[0] == 'N' && trim[1] == 'O')
+                count++;
+            else if (trim[0] == 'W' && trim[1] == 'E')
+                count1++;
+            else if (trim[0] == 'E' && trim[1] == 'A')
+                count2++;
+            else if (trim[0] == 'S' && trim[1] == 'O')
+                count3++;
+            else if (trim[0] == 'S' && trim[1] == 'O')
+                count3++;
+            else if (trim[0] == 'C')
+                count4++;
+            else if (trim[0] == 'F')
+                count5++;
+        }
         i++;
     }
-    if (count + count1 + count2 + count3 == 4)
-        return (0);
-    return (1);
+    if (count != 1 || count1 != 1 || count2 != 1 || count3 != 1 || count4 != 1 || count5 != 1)
+        return (1);
+    return (0);
 }

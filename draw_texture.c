@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_texture.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhassani <mhassani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 14:50:21 by ayylaaba          #+#    #+#             */
-/*   Updated: 2023/08/15 19:49:42 by ayylaaba         ###   ########.fr       */
+/*   Updated: 2023/08/15 21:44:40 by mhassani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	draw_wall(t_picture * data, t_imgs *imgs, int s)
 		x = (int)(imgs->width * (data->ty_ver / 64)) % imgs->width;
 	for(int i = 0; i < data->start ; i++)
 	{
-		my_put_pixl(data, data->f , i , 0);
+		my_put_pixl(data, data->f , i , 150);
 	}
 	while (data->start < end && data->start < 640)
 	{
@@ -88,6 +88,6 @@ void	draw_wall(t_picture * data, t_imgs *imgs, int s)
 	}
 	for(int i = end; i < 640 ; i++)
 	{
-		my_put_pixl(data, data->f , i , 0);
+		my_put_pixl(data, data->f , i , 30);
 	}
 }

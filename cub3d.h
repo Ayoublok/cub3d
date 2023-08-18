@@ -6,7 +6,7 @@
 /*   By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:04:51 by ayylaaba          #+#    #+#             */
-/*   Updated: 2023/08/15 19:29:56 by ayylaaba         ###   ########.fr       */
+/*   Updated: 2023/08/17 17:00:45 by ayylaaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,8 @@ typedef struct creat_picture
 	float	ty;
 }			t_picture;
 
-
-int	is_wall_move(t_picture *data, float x, float y);
+int			check_new_line(char **map);
+int			is_wall_move(t_picture *data, float x, float y);
 void		init(t_picture *data);
 void		my_put_pixl(t_picture *test, int x, int y, int color);
 void		draw_walls(t_picture *data);
@@ -129,12 +129,12 @@ int			ft_strcmp(char *s1, char *s2);
 char		*ft_strtrim(char *s1, char *set);
 int			ft_isdigit(char *str);
 char		*ft_strrchr(char *s, int c);
-void		ft_perror(void);
+void		ft_perror(char *s);
 int			check_map_extantion(char *map);
 int			character(char **map);
 int			check_double_element(char **map);
 int			check_wall_text(char **src);
-int			check_character(char **s);
+int			check_character(char **s, char **s2);
 int			check_color(char **map);
 int			check_text_ext(char **map);
 char		*get_content(char *str, char c);

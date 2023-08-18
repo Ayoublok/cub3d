@@ -6,39 +6,39 @@
 /*   By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 18:50:00 by ayylaaba          #+#    #+#             */
-/*   Updated: 2023/08/15 19:42:04 by ayylaaba         ###   ########.fr       */
+/*   Updated: 2023/08/18 00:29:51 by ayylaaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	ft_perror(void)
+void ft_perror(char *s)
 {
-	write(2, "ERROR\n", 6);
+	write(2, s, ft_strlen(s));
 	exit(1);
 }
 
-int	ft_exit(void)
+int ft_exit(void)
 {
 	write(1, "safi barka elik \n", 17);
 	exit(0);
 }
 
-void	my_put_pixl(t_picture *test, int x, int y, int color)
+void my_put_pixl(t_picture *test, int x, int y, int color)
 {
-	char	*hold_pic_addr;
+	char *hold_pic_addr;
 
 	if (x < 0 || x >= 640 || y < 0 || y >= 640)
-		return ;
+		return;
 	hold_pic_addr = test->adrr + (y * test->len + x * (test->bit_pixl / 8));
 	*(unsigned int *)hold_pic_addr = color;
 }
 
-char	*get_content(char *str, char c)
+char *get_content(char *str, char c)
 {
-	int		i;
-	int		i2;
-	char	*content;
+	int i;
+	int i2;
+	char *content;
 
 	i = 0;
 	i2 = 0;
@@ -59,20 +59,20 @@ char	*get_content(char *str, char c)
 	return (content);
 }
 
-int	check_text_ext(char **map)
+int check_text_ext(char **map)
 {
-	int		i;
-	char	*trim;
-	char	*ext;
-	char	**wall_pos;
-	char	*line_content;
+	int i;
+	char *trim;
+	char *ext;
+	char **wall_pos;
+	char *line_content;
 
 	i = 0;
 	while (map[i])
 	{
 		trim = ft_strtrim(map[i], " ");
 		wall_pos = ft_split(trim, ' ');
-		if (!ft_strcmp(wall_pos[0], "NO") || !ft_strcmp(wall_pos[0], "WE")
+		if (!ft_strcmp(wall_pos[0], "NO") || !ft_strcmp(wall_pos[0], "WE") 
 			|| !ft_strcmp(wall_pos[0], "SO") || !ft_strcmp(wall_pos[0], "EA"))
 		{
 			line_content = get_content(trim, ' ');
@@ -88,11 +88,10 @@ int	check_text_ext(char **map)
 	return (0);
 }
 
-
-void	draw_squar(t_picture *test, int old_x, int old_y, int color)
+void draw_squar(t_picture *test, int old_x, int old_y, int color)
 {
-	int	x;
-	int	y;
+	int x;
+	int y;
 
 	x = old_x;
 	while (x <= old_x + 62)
@@ -104,10 +103,10 @@ void	draw_squar(t_picture *test, int old_x, int old_y, int color)
 	}
 }
 
-int	is_wall(t_picture *data, float x, float y)
+int is_wall(t_picture *data, float x, float y)
 {
-	int	j;
-	int	i;
+	int j;
+	int i;
 
 	j = 0;
 	while (data->map_v3 && data->map_v3[j])
@@ -117,9 +116,8 @@ int	is_wall(t_picture *data, float x, float y)
 	i = 0;
 	while (data->map_v3[(int)y] && data->map_v3[(int)y][(int)i])
 		i++;
-	if (x >= i - 1)
+	if (x >= i)
 		return 1;
-	int k = 0;
 	if (data->map_v3[(int)y][(int)x] == '1')
 	{
 		return (1);
@@ -127,35 +125,12 @@ int	is_wall(t_picture *data, float x, float y)
 	return (0);
 }
 
-int	is_wall_move(t_picture *data, float x, float y)
+void draw_horizontal_ray(t_picture *data, float angle)
 {
-	int	j;
-	int	i;
-
-	j = 0;
-	while (data->map_v3 && data->map_v3[j])
-		j++;
-	if (y >= j || x < 0 || y < 0)
-		return (1);
-	i = 0;
-	while (data->map_v3[(int)y] && data->map_v3[(int)y][(int)i])
-		i++;
-	if (x >= i - 1)
-		return 1;
-	int k = 0;
-	if (data->map_v3[(int)y][(int)x] == '1' && data->ray_distancee < 5)
-	{
-		return (1);
-	}
-	return (0);
-}
-
-void	draw_horizontal_ray(t_picture *data, float angle)
-{
-	int		i;
-	float	x;
-	float	y;
-	float	rad;
+	int i;
+	float x;
+	float y;
+	float rad;
 
 	rad = angle * M_PI / 180;
 	x = data->x_p;
@@ -170,13 +145,13 @@ void	draw_horizontal_ray(t_picture *data, float angle)
 	}
 }
 
-void	draw_vertical_ray(t_picture *data, float angle)
+void draw_vertical_ray(t_picture *data, float angle)
 {
-	int		i;
-	float	x;
-	float	y;
-	float	rad;
-	
+	int i;
+	float x;
+	float y;
+	float rad;
+
 	x = data->x_p;
 	y = data->y_p;
 	rad = angle * M_PI / 180;
@@ -190,72 +165,72 @@ void	draw_vertical_ray(t_picture *data, float angle)
 	}
 }
 
-void	put_player(t_picture *test, int color)
+void put_player(t_picture *test, int color)
 {
-	double	rad;
-	double	x;
-	double	y;
-	double	angle;
-	double	cur_angl;
+	double rad;
+	double x;
+	double y;
+	double angle;
+	double cur_angl;
 
-	test->color = 0x0ff0000; //red;
+	test->color = 0x0ff0000; // red;
 	angle = test->deta + 30;
 	int i = 0;
 	test->f = 0;
-	
+
 	while (test->f < 640)
 	{
-			hor_int(test, angle, x, y); // just to get distance horizontal
-			ver_int(test, angle, x, y); // just to get distance vertical
-			if (test->ray_distance_hor <= test->ray_distance_ver)
-			{
-				i = 1;
-				test->ray_distance = test->ray_distance_hor;
-				test->tx = test->tx_hor;
-				test->ty = test->ty_hor;
-			}
-			else if (test->ray_distance_ver <= test->ray_distance_hor)
-			{
-				i = 0;
-				test->ray_distance = test->ray_distance_ver;
-				test->tx = test->tx_ver;
-				test->ty = test->ty_ver;
-			}
-			cur_angl = (test->deta - angle);
-			if (!i)
-				test->new_ray_distance = test->ray_distance_ver * cos(((cur_angl) * M_PI / 180));
-			else 
-				test->new_ray_distance = test->ray_distance_hor * cos(((cur_angl) * M_PI / 180));
-			test->dist_p_screen	= 320 / tan(30 * M_PI / 180);
-			test->wall_tall	= ((64 / test->new_ray_distance) * test->dist_p_screen);
-			draw_walls(test);
-			test->f++;
-			angle -= 64.0 / 640.0;
+		hor_int(test, angle, x, y); // just to get distance horizontal
+		ver_int(test, angle, x, y); // just to get distance vertical
+		if (test->ray_distance_hor <= test->ray_distance_ver)
+		{
+			i = 1;
+			test->ray_distance = test->ray_distance_hor;
+			test->tx = test->tx_hor;
+			test->ty = test->ty_hor;
+		}
+		else if (test->ray_distance_ver <= test->ray_distance_hor)
+		{
+			i = 0;
+			test->ray_distance = test->ray_distance_ver;
+			test->tx = test->tx_ver;
+			test->ty = test->ty_ver;
+		}
+		cur_angl = (test->deta - angle);
+		if (!i)
+			test->new_ray_distance = test->ray_distance_ver * cos(((cur_angl)*M_PI / 180));
+		else
+			test->new_ray_distance = test->ray_distance_hor * cos(((cur_angl)*M_PI / 180));
+		test->dist_p_screen = 320 / tan(30 * M_PI / 180);
+		test->wall_tall = ((64 / test->new_ray_distance) * test->dist_p_screen);
+		draw_walls(test);
+		test->f++;
+		angle -= 64.0 / 640.0;
 	}
 }
 
-void	draw_map(char **map, t_picture *test)
+void draw_map(char **map, t_picture *test)
 {
 
 	put_player(test, 0x00FDFD55);
 	mlx_put_image_to_window(test->ptr, test->wind, test->image_adrr, 0, 0);
 }
 
-int	give_key(int key, t_picture *test)
+int give_key(int key, t_picture *test)
 {
 	if (key == 65361)
 		test->r_left = 1;
 	if (key == 65363)
 		test->r_right = 1;
-	if (key == 119) //w
+	if (key == 119) // w
 		test->m_up = 1;
-	if (key == 115) //s
+	if (key == 115) // s
 		test->m_down = 1;
-	if (key == 100) //d
+	if (key == 100) // d
 		test->m_left = 1;
 	if (key == 97)
 		test->m_right = 1;
-	if (key == 65307) //esc
+	if (key == 65307) // esc
 	{
 		write(1, "thella ;)\n", 10);
 		free(test);
@@ -264,7 +239,7 @@ int	give_key(int key, t_picture *test)
 	return (0);
 }
 
-int	animate_moves(t_picture *test)
+int animate_moves(t_picture *test)
 {
 	test->speed = 0.5;
 	rotation(test);
@@ -276,7 +251,7 @@ int	animate_moves(t_picture *test)
 	return (0);
 }
 
-int	key_released(int key, t_picture *test)
+int key_released(int key, t_picture *test)
 {
 	if (key == 65361)
 		test->r_left = 0;
@@ -293,10 +268,10 @@ int	key_released(int key, t_picture *test)
 	return (0);
 }
 
-void	initialize_the_angle_of_player(t_picture *test)
+void initialize_the_angle_of_player(t_picture *test)
 {
-	int	i;
-	int	j;
+	int i;
+	int j;
 
 	i = 0;
 	j = 0;
@@ -321,15 +296,15 @@ void	initialize_the_angle_of_player(t_picture *test)
 	}
 }
 
-t_picture	*initialize_structure(int ac, char **av)
+t_picture *initialize_structure(int ac, char **av)
 {
-	t_picture	*test;
-	int			fd;
-	char		*map_content;
+	t_picture *test;
+	int fd;
+	char *map_content;
 
 	test = malloc(sizeof(t_picture));
 	if (ac != 2)
-		ft_perror();
+		ft_perror("Is Not Valid Argement\n");
 	if (!test)
 	{
 		printf("Error\n");
@@ -344,34 +319,54 @@ t_picture	*initialize_structure(int ac, char **av)
 	test->r_right = 0;
 	// test->map = ft_strdup(av[1]);
 	fd = open(av[1], O_RDONLY);
+	//printf(" -------- map_content = %s", map_content);
+	if (fd < 0)
+		ft_perror("file error\n");
 	map_content = get_next_line(fd);
+	if (!map_content[0])
+	{
+		write(2, "Error empty_file\n", 18);
+		exit(1);
+	}
 	test->map_v2 = ft_split(map_content, '\n');
 	test->map_v3 = test->map_v2 + 6;
 	initialize_the_angle_of_player(test);
 	return (test);
 }
 
-int	main(int ac, char **av)
+int main(int ac, char **av)
 {
-	t_picture	*test;
+	t_picture *test;
 
 	test = initialize_structure(ac, av);
-	if (check_map_extantion(av[1]) || check_character(test->map_v2)
+
+	if (check_map_extantion(av[1]) || check_character(test->map_v2, test->map_v3)
 		|| check_wall_text(test->map_v2) || check_double_element(test->map_v2))
-		ft_perror();
+	{
+		if (check_map_extantion(av[1]))
+			ft_perror("extenion Is Not Valid\n");
+		if (check_wall_text(test->map_v2))
+			ft_perror("Texture Is Not Valid\n");
+		if (check_double_element(test->map_v2))
+			ft_perror("Texture Is Duplicat\n");
+		if (check_character(test->map_v2, test->map_v3))
+			ft_perror("Error space around '0'\n");
+	}
+	// if (check_new_line(test->map_v3))
+	// 	ft_perror("Error There's a New_line\n");
 	init_player(test->map_v3, test);
 	test->ptr = mlx_init();
 	test->wind = mlx_new_window(test->ptr, 640, 640, "cub3d");
 	test->image_adrr = mlx_new_image(test->ptr, 640, 640);
 	test->adrr = mlx_get_data_addr(test->image_adrr, &test->bit_pixl,
-			&test->len, &test->end);
+								   &test->len, &test->end);
 	test->r_left = 0;
 	test->r_right = 0;
 	init(test);
 	draw_map(test->map_v3, test);
 	put_player(test, test->color);
 	test->image_adrr = mlx_new_image(test->ptr, 640, 640);
-	test->adrr = mlx_get_data_addr(test->image_adrr, &test->bit_pixl,&test->len, &test->end);
+	test->adrr = mlx_get_data_addr(test->image_adrr, &test->bit_pixl, &test->len, &test->end);
 	mlx_hook(test->wind, 17, 0, ft_exit, NULL);
 	mlx_hook(test->wind, 2, 3, give_key, test);
 	mlx_hook(test->wind, 3, 0, key_released, test);

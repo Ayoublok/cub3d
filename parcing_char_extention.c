@@ -6,7 +6,7 @@
 /*   By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 16:41:59 by ayylaaba          #+#    #+#             */
-/*   Updated: 2023/07/22 11:23:05 by ayylaaba         ###   ########.fr       */
+/*   Updated: 2023/08/17 23:52:57 by ayylaaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int     character(char **map)
         {
             while (map[i][j])
             {
-                if (map[i][j] != '1' && map[i][j] != '0' && map[i][j] != 'W' && map[i][j] != 'E' && map[i][j] != 'N' && map[i][j] != 'S')
+                if (map[i][j] != '1' && map[i][j] != '0' && map[i][j] != 'W' && map[i][j] != ' '  && map[i][j] != 'E' && map[i][j] != 'N' && map[i][j] != 'S')
                     return (1);
                 if (map[i][j] == 'W' || map[i][j] == 'E' || map[i][j] == 'N' || map[i][j] == 'S')
                 {
@@ -87,20 +87,65 @@ int     character(char **map)
     return (0);
 }
 
+int    front_end_wall(char *str)
+{
+    int i;
 
-int     check_character(char **s)
+    i = 0;
+    while (str[i])
+    {
+        if (str[i] != '1')
+            return (1);
+        i++;
+    }
+    return (0);
+}
+
+int     check_wall(char **map)
+{
+    int i;
+    int j;
+
+    j = 0;
+    i = 0;
+    while (map[j]) // wall first and last char
+    {
+        if (map[j][0] != '1' || map[j][ft_strlen(map[j]) - 1] != '1')
+        {
+            return (1);
+        }
+        j++;
+    }
+    i = 0;
+    while (map[i])
+        i++;
+    i--;
+    if (front_end_wall(map[0]) || front_end_wall(map[i]))
+        return (1);
+    return (0);
+}
+
+int     check_character(char **s, char **s2)
 {
     int     i;
     int     j;
     char    *trim;
 
     i = 0;
-    if (check_player_pos(s) || character(s) || check_color(s) || check_text_ext(s)) // add texture handling
-        return (1);
+    if (check_wall(s2))
+        ft_perror("Wall Is Not Valid\n");
+    if (check_player_pos(s) || character(s2) || check_color(s) /*|| check_text_ext(s)*/) // add texture handling
+    {
+        if (check_player_pos(s))
+            ft_perror("Issue In Player\n");
+        if (character(s2))
+            ft_perror("Character Is Not Valid\n");
+    //     if (check_text_ext(s))
+    //         ft_perror("Texture Name or Extention Is Not Valid\n");
+    }
     while (s[i])
     {
         trim = ft_strtrim(s[i], " ");
-       //     printf ("trim === %s\n", trim);
         if (trim[0] == '1')
         {
             j = 0;
@@ -121,3 +166,21 @@ int     check_character(char **s)
     return (0);
 }
 
+int     check_new_line(char **map)
+{
+    int     i;
+    int     j;
+
+    i = 0;
+    while (map[i])
+    {
+        while (map[i][j])
+        {
+            if (map[i][j] == '\n')
+                return (1);
+            j++;
+        }
+        i++;
+    }
+    return (0);
+}

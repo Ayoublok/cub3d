@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhassani <mhassani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 12:28:19 by ayylaaba          #+#    #+#             */
-/*   Updated: 2023/08/07 22:51:35 by mhassani         ###   ########.fr       */
+/*   Updated: 2023/08/18 00:14:54 by ayylaaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ char	*ft_read(int fd, char *s)
 			return (0);
 		}
 		ptr[n] = '\0';
+		printf ("<%s>\n", ptr);
 		s = ft_strjoin(s, ptr);
 	}
 	free(ptr);
