@@ -6,7 +6,7 @@
 /*   By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:04:51 by ayylaaba          #+#    #+#             */
-/*   Updated: 2023/08/19 01:00:26 by ayylaaba         ###   ########.fr       */
+/*   Updated: 2023/08/19 02:22:10 by ayylaaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,16 @@
 #  define BUFFER_SIZE 2147
 # endif
 
-typedef struct creat_data
+typedef struct s_infos
 {
-	// int         x;
-	// int         y;
-	// int         color;
-	// int         wigth;
-	// int         hight;
-	// void        *image;
-}			t_data;
+	double	rad;
+	double	x;
+	double	y;
+	double	angle;
+	double	cur_angl;
+	int		count;
+	char	*trim;
+}	t_inf;
 
 typedef struct s_imgs
 {
@@ -44,17 +45,22 @@ typedef struct s_imgs
 	int		line;
 	int		bits;
 	int		wa33;
+	int 	end;
+	int 	x;
+	float 	y;
+	float 	grid;
 }	t_imgs;
 
 typedef struct creat_picture
 {
+	float	rad_v2;
 	t_imgs	*imgs;
+	t_inf *inf;
 	int c_color;
 	int f_color;
 	int		start;
 	int		begin;
 	int		old_s;
-	t_data	*data;
 	char	dir_h;
 	char	dir_v;
 	char	*map;
@@ -161,5 +167,6 @@ void	draw_squar(t_picture *test, int old_x, int old_y, int color);
 int	key_released(int key, t_picture *test);
 int	give_key(int key, t_picture *test);
 int	animate_moves(t_picture *test);
+int ft_check_move(t_picture *data ,double x, double y);
 
 #endif

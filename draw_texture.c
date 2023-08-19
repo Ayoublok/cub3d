@@ -6,7 +6,7 @@
 /*   By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 14:50:21 by ayylaaba          #+#    #+#             */
-/*   Updated: 2023/08/19 00:38:39 by ayylaaba         ###   ########.fr       */
+/*   Updated: 2023/08/19 02:11:33 by ayylaaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,43 +50,51 @@ void	draw_walls(t_picture *data)
 		draw_wall(data, &data->imgs[3], 0);
 }
 
-void	draw_wall(t_picture * data, t_imgs *imgs, int s)
+
+void	draw_all(t_picture * data, t_imgs *imgs, int s)
 {
 	int		end;
-	float		grid;
-	int		x = 0;
-	float	y = 0;
-	int i = 0;
+	float	grid;
+	imgs->x = 0;
+	imgs->y = 0;
 
-	grid = imgs->height / data->wall_tall;
+	imgs->grid = imgs->height / data->wall_tall;
 	if (data->wall_tall > 640)
 	{
-		y = grid * ((data->wall_tall - 640) / 2);
+		imgs->y = imgs->grid * ((data->wall_tall - 640) / 2);
 		data->wall_tall = 640;
 	}
 	data->start = 320 - (data->wall_tall / 2);
 	data->begin = data->start;
-	end = data->start + data->wall_tall;
+	imgs->end = data->start + data->wall_tall;
 	if (!s)
-		x = (int)(imgs->width * (data->tx_hor / 64)) % imgs->width;
+		imgs->x = (int)(imgs->width * (data->tx_hor / 64)) % imgs->width;
 	if (s)
-		x = (int)(imgs->width * (data->ty_ver / 64)) % imgs->width;
+		imgs->x = (int)(imgs->width * (data->ty_ver / 64)) % imgs->width;
+}
+
+void	draw_wall(t_picture * data, t_imgs *imgs, int s)
+{
+	int 	i;
+	
 	i = 0;
+	draw_all(data, imgs, s);
 	while(i < data->start)
 	{
 		my_put_pixl(data, data->f , i , data->c_color);
 		i++;
 	}
-	while (data->start < end && data->start < 640)
+	while (data->start < imgs->end && data->start < 640)
 	{
-		my_put_pixl(data, data->f , data->start , get_color(imgs,x,y));
+		my_put_pixl(data, data->f , data->start , get_color(imgs,imgs->x,imgs->y));
 		data->start++;
-		y += grid;
+		imgs->y += imgs->grid;
 	}
-	i = end;
+	i = imgs->end;
 	while(i < 640)
 	{
 		my_put_pixl(data, data->f , i , data->f_color);
 		i++;
 	}
 }
+
