@@ -6,7 +6,7 @@
 /*   By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 00:28:13 by ayylaaba          #+#    #+#             */
-/*   Updated: 2023/08/19 02:32:16 by ayylaaba         ###   ########.fr       */
+/*   Updated: 2023/08/19 16:20:08 by ayylaaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ t_picture	*initialize_structure(int ac, char **av)
 
 	test = malloc(sizeof(t_picture));
 	test->inf = malloc(sizeof(t_inf));
+	test->count = malloc(sizeof(t_count));
 	if (ac != 2)
 		ft_perror("wrong argment\n");
 	if (!test)

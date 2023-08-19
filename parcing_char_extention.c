@@ -6,7 +6,7 @@
 /*   By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 16:41:59 by ayylaaba          #+#    #+#             */
-/*   Updated: 2023/08/19 02:56:14 by ayylaaba         ###   ########.fr       */
+/*   Updated: 2023/08/19 16:42:56 by ayylaaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int     player_space( char **map, int i, int j)
     if (map[i + 1][j] == ' ')
         return (1);
     else if (map[i  - 1][j] == ' ')
-        return (1); 
+        return (1);
     else if (map[i][j + 1] == ' ')
         return (1);
     else if (map[i + 1][j - 1] == ' ')
@@ -47,7 +47,7 @@ int     check_player_pos(char **str, t_inf *info)
             else  if ((info->trim [0] == '0' || info->trim [0] == '1') && info->trim [j] == 'E')
                  info->count++;
         }
-        free(info->trim );
+        free(info->trim);
     }
     if (info->count== 1)
         return (0);
@@ -70,11 +70,17 @@ int     character(char **map)
             while (map[i][++j])
             {
                 if (map[i][j] != '1' && map[i][j] != '0' && map[i][j] != 'W' && map[i][j] != 'E' && map[i][j] != ' ' && map[i][j] != 'N' && map[i][j] != 'S')
+                {
+                    free (trim);
                     return (1);
+                }
                 if (map[i][j] == 'W' || map[i][j] == 'E' || map[i][j] == 'N' || map[i][j] == 'S')
                 {
                     if (player_space(map, i, j))
+                    {
+                        free(trim);
                         return (1);
+                    }
                 }
             }
         }
@@ -108,9 +114,12 @@ int     check_wall(char **map)
     while (map[j]) // wall first and last char
     {
         trim = ft_strtrim(map[j], " ");
-        // trim = ft_strtrim(map[j], "\t");
         if (trim[0] != '1' || trim[ft_strlen(trim) - 1] != '1')
+        {
+            free(trim);
             return (1);
+        }
+        free(trim);
         j++;
     }
     i = 0;
@@ -122,16 +131,36 @@ int     check_wall(char **map)
     return (0);
 }
 
-// void    test(char *s, int i, int j, char *trim)
-// {}
+int    test(t_picture *data, char **s)
+{
+    while (s[++data->i])
+    {
+        data->trim = ft_strtrim(s[data->i], " ");
+        if (data->trim[0] == '1')
+        {
+            data->j = -1;
+            while (s[data->i][++data->j])
+            {
+                    if (s[data->i][data->j] == '0' && (s[data->i][data->j- 1] == ' ' || s[data->i][data->j + 1] == ' '))
+                    {
+                        free(data->trim);
+                        return (1);
+                    }
+                    else if (s[data->i][data->j] == '0' && (s[data->i - 1][data->j] == ' ' || s[data->i + 1][data->j] == ' '))
+                    {
+                        free(data->trim);
+                        return (1);
+                    } 
+
+            }
+        }
+        free(data->trim);
+    }
+    return (0);
+}
 
 int     check_character(char **s, char **s2, t_picture *data)
 {
-    int     i;
-    int     j;
-    char    *trim;
-
-    i = -1;
     if (check_wall(s2))
         ft_perror("Wall Is Not Valid\n");
     if (check_player_pos(s, data->inf) || character(s2) || check_color(s, data) || check_text_ext(s, data)) // add texture handling
@@ -141,31 +170,9 @@ int     check_character(char **s, char **s2, t_picture *data)
         if (character(s2))
             ft_perror("Character Is Not Valid\n");
     }
-    while (s[++i])
-    {
-        trim = ft_strtrim(s[i], " ");
-        if (trim[0] == '1')
-        {
-            j = -1;
-            while (s[i][++j])
-            {
-                if (s[i][j] == '0')
-                {
-                    if (s[i][j - 1] == ' ' || s[i][j + 1] == ' ')
-                    {
-                        free(trim);   
-                        return (1);
-                    }
-                    else if (s[i - 1][j] == ' ' || s[i + 1][j] == ' ')
-                    {
-                        free(trim);   
-                        return (1);
-                    }
-                }
-            }
-        }
-        free(trim);
-    }
+    data->i = -1;
+    if(test(data, s))
+        return (1);
     return (0);
 }
 

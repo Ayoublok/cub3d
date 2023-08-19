@@ -6,7 +6,7 @@
 /*   By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 00:27:12 by ayylaaba          #+#    #+#             */
-/*   Updated: 2023/08/19 00:32:39 by ayylaaba         ###   ########.fr       */
+/*   Updated: 2023/08/19 16:22:49 by ayylaaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ void	ft_check_errors(char *map_content, t_picture *test, char **av)
 	test->map_v2 = ft_split(map_content, '\n');
 	test->map_v3 = test->map_v2 + 6;
 	if (check_map_extantion(av[1]) || check_character(test->map_v2, test->map_v3, test)
-		|| check_wall_text(test->map_v2) || check_double_element(test->map_v2))
+		|| check_wall_text(test->count,test->map_v2) || check_double_element(test->count, test->map_v2))
 	{
 		if (check_map_extantion(av[1]))
 			ft_perror("extenion Is Not Valid\n");
-		if (check_wall_text(test->map_v2))
+		if (check_wall_text(test->count, test->map_v2))
 			ft_perror("Texture Is Not Valid\n");
-		if (check_double_element(test->map_v2))
+		if (check_double_element(test->count, test->map_v2))
 			ft_perror("Texture Is Duplicat\n");
 		if (check_character(test->map_v2, test->map_v3, test))
 			ft_perror("Error space around '0'\n");

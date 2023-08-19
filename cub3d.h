@@ -6,7 +6,7 @@
 /*   By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 19:04:51 by ayylaaba          #+#    #+#             */
-/*   Updated: 2023/08/19 02:22:10 by ayylaaba         ###   ########.fr       */
+/*   Updated: 2023/08/19 16:32:51 by ayylaaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,21 @@
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 2147
 # endif
+
+typedef struct s_count
+{
+	int     i;
+    int     count;
+    int     count1;
+    int     count2;
+    int     count3;
+    int     count4;
+    char    **a;
+    char    *trim;
+	
+} t_count;
+
+
 
 typedef struct s_infos
 {
@@ -53,9 +68,13 @@ typedef struct s_imgs
 
 typedef struct creat_picture
 {
+	    char    *trim;
+	int		i;
+	int		j;
 	float	rad_v2;
 	t_imgs	*imgs;
-	t_inf *inf;
+	t_inf 	*inf;
+	t_count *count;
 	int c_color;
 	int f_color;
 	int		start;
@@ -138,8 +157,8 @@ char		*ft_strrchr(char *s, int c);
 void 		ft_perror(char *s);
 int			check_map_extantion(char *map);
 int			character(char **map);
-int			check_double_element(char **map);
-int			check_wall_text(char **src);
+int     check_double_element(t_count *c, char **map);
+int			check_wall_text(t_count *c, char **src);
 int     	check_character(char **s, char **s2, t_picture *data);
 int     	check_number(char *str, char ch, t_picture *data);
 void		move_up(t_picture *data);
