@@ -6,32 +6,63 @@
 /*   By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 11:18:47 by ayylaaba          #+#    #+#             */
-/*   Updated: 2023/08/17 23:44:37 by ayylaaba         ###   ########.fr       */
+/*   Updated: 2023/08/19 00:13:02 by ayylaaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int     check_number(char *str)
+long long	ft_atoi(const char *str)
 {
-    int     i;
-    char    **number;
+	int	i;
+	long long	result;
+	long long	sign;
 
-    i = 0;
+	i = 0;
+	result = 0;
+	sign = 1;
+	while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\f'
+		|| str[i] == '\r' || str[i] == '\n' || str[i] == '\v'))
+		i++;
+	if (str[i] == '-')
+	{
+		sign = -1;
+		i++;
+	}
+	else if (str[i] == '+')
+		i++;
+	while (str[i] >= 48 && str[i] <= 57)
+	{
+		result = result * 10 + str[i] - '0';
+		i++;
+	}
+	return (sign * result);
+}
+
+int     check_number(char *str, char ch, t_picture *data)
+{
+    char    **number;
+    int i = 0;
+
     number = ft_split(str, ',');
     if (!ft_isdigit(number[0]) || !ft_isdigit(number[1]) || !ft_isdigit(number[2]))
-        ft_perror("invalid color character\n");
-    if (atoi(number[0]) <= 0 || atoi(number[1]) <= 0 || atoi(number[2]) <= 0)
-        return (1);
+        ft_perror("Is Not Valid RGB\n");
+    if (ft_atoi(number[0]) < 0 || ft_atoi(number[1]) < 0 || ft_atoi(number[2]) < 0)
+        ft_perror("Is Not Valid RGB\n");
     while (i < 3)
     {
-        if (!(atoi(number[i]) >= 0 && atoi(number[i]) <= 255))
+        if (!(ft_atoi(number[i]) >= 0 && ft_atoi(number[i]) <= 255) 
+            || (ft_atoi(number[i]) > INT_MAX))
             ft_perror("Is Not Valid RGB\n");
         i++;
     }
+    if (ch == 'C')
+        data->c_color = (ft_atoi(number[0]) * 256 * 256) + (ft_atoi(number[1]) * 256) + ft_atoi(number[2]);
+    else if (ch == 'F')
+        data->f_color = (ft_atoi(number[0]) * 256 * 256) + (ft_atoi(number[1]) * 256) + ft_atoi(number[2]);
+    ft_free(number);
     return (0);
 }
-
 int     comma(char *str)
 {
     int     i;
@@ -50,7 +81,7 @@ int     comma(char *str)
     return (0);
 }
 
-int     check_color(char **map)
+int     check_color(char **map, t_picture *data)
 {
     int     i;
     int     j;
@@ -69,9 +100,11 @@ int     check_color(char **map)
             line_content = get_content(trim, ' ');
             if (comma(line_content))
                 ft_perror ("more than comma in RGB\n");  
-            if (check_number(line_content))
+            if (check_number(line_content, ch, data))
                 return (1);
+            free(line_content);
         }
+        free(trim);
         i++;
     } 
     return (0);

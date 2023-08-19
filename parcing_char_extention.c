@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parcing_char_extention.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhassani <mhassani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 16:41:59 by ayylaaba          #+#    #+#             */
-/*   Updated: 2023/08/17 23:52:57 by ayylaaba         ###   ########.fr       */
+/*   Updated: 2023/08/18 18:27:53 by mhassani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int     player_space( char **map, int i, int j)
         return (1);
     return (0);
 }
-
 int     check_player_pos(char **str)
 {
     int i;
@@ -50,6 +49,7 @@ int     check_player_pos(char **str)
                 count++;
             j++;
         }
+        free(trim);
         i++;
     }
     if (count == 1)
@@ -72,18 +72,21 @@ int     character(char **map)
         {
             while (map[i][j])
             {
-                if (map[i][j] != '1' && map[i][j] != '0' && map[i][j] != 'W' && map[i][j] != ' '  && map[i][j] != 'E' && map[i][j] != 'N' && map[i][j] != 'S')
+                if (map[i][j] != '1' && map[i][j] != '0' && map[i][j] != 'W' && map[i][j] != 'E' && map[i][j] != ' ' && map[i][j] != 'N' && map[i][j] != 'S')
                     return (1);
                 if (map[i][j] == 'W' || map[i][j] == 'E' || map[i][j] == 'N' || map[i][j] == 'S')
                 {
                     if (player_space(map, i, j))
+                    {
                         return (1);
+                    }
                 }
                 j++;
             }
         }
+        free(trim);
         i++;
-    } 
+    }
     return (0);
 }
 
@@ -100,20 +103,21 @@ int    front_end_wall(char *str)
     }
     return (0);
 }
-
 int     check_wall(char **map)
 {
-    int i;
-    int j;
+    int     i;
+    int     j;
+    char    *trim;
 
     j = 0;
     i = 0;
+    
     while (map[j]) // wall first and last char
     {
-        if (map[j][0] != '1' || map[j][ft_strlen(map[j]) - 1] != '1')
-        {
+        trim = ft_strtrim(map[j], " ");
+        // trim = ft_strtrim(map[j], "\t");
+        if (trim[0] != '1' || trim[ft_strlen(trim) - 1] != '1')
             return (1);
-        }
         j++;
     }
     i = 0;
@@ -125,7 +129,7 @@ int     check_wall(char **map)
     return (0);
 }
 
-int     check_character(char **s, char **s2)
+int     check_character(char **s, char **s2, t_picture *data)
 {
     int     i;
     int     j;
@@ -134,7 +138,7 @@ int     check_character(char **s, char **s2)
     i = 0;
     if (check_wall(s2))
         ft_perror("Wall Is Not Valid\n");
-    if (check_player_pos(s) || character(s2) || check_color(s) /*|| check_text_ext(s)*/) // add texture handling
+    if (check_player_pos(s) || character(s2) || check_color(s, data) || check_text_ext(s, data)) // add texture handling
     {
         if (check_player_pos(s))
             ft_perror("Issue In Player\n");
@@ -143,6 +147,7 @@ int     check_character(char **s, char **s2)
     //     if (check_text_ext(s))
     //         ft_perror("Texture Name or Extention Is Not Valid\n");
     }
+    // exit(1);
     while (s[i])
     {
         trim = ft_strtrim(s[i], " ");
@@ -154,33 +159,22 @@ int     check_character(char **s, char **s2)
                 if (s[i][j] == '0')
                 {
                     if (s[i][j - 1] == ' ' || s[i][j + 1] == ' ')
+                    {
+                        free(trim);   
                         return (1);
+                    }
                     else if (s[i - 1][j] == ' ' || s[i + 1][j] == ' ')
+                    {
+                        free(trim);   
                         return (1);
+                    }
                 }
                 j++;
             }
         }
+        free(trim);
         i++;
     }
     return (0);
 }
 
-int     check_new_line(char **map)
-{
-    int     i;
-    int     j;
-
-    i = 0;
-    while (map[i])
-    {
-        while (map[i][j])
-        {
-            if (map[i][j] == '\n')
-                return (1);
-            j++;
-        }
-        i++;
-    }
-    return (0);
-}

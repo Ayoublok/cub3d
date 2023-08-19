@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhassani <mhassani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 15:32:50 by ayylaaba          #+#    #+#             */
-/*   Updated: 2023/08/18 00:16:50 by ayylaaba         ###   ########.fr       */
+/*   Updated: 2023/08/17 18:05:09 by mhassani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	ft_strlen(char *str)
 	int	i;
 
 	i = 0;
-	if (str == NULL || !str[0])
+	if (str == NULL || str[0] == '\0')
 		return (0);
 	while (str[i])
 		i++;
