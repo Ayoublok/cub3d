@@ -6,7 +6,7 @@
 /*   By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 00:28:13 by ayylaaba          #+#    #+#             */
-/*   Updated: 2023/08/19 16:20:08 by ayylaaba         ###   ########.fr       */
+/*   Updated: 2023/08/19 17:54:26 by ayylaaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ t_picture	*initialize_structure(int ac, char **av)
 	test->r_right = 0;
 	fd = open(av[1], O_RDONLY);
 	map_content = get_next_line(fd);
+	if (!map_content)
+		ft_perror("Empty map");
 	ft_check_errors(map_content, test, av);
 	int	i = 0;
 	initialize_the_angle_of_player(test);

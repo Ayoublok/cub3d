@@ -6,7 +6,7 @@
 /*   By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 16:41:59 by ayylaaba          #+#    #+#             */
-/*   Updated: 2023/08/19 16:42:56 by ayylaaba         ###   ########.fr       */
+/*   Updated: 2023/08/19 18:21:34 by ayylaaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,14 +161,16 @@ int    test(t_picture *data, char **s)
 
 int     check_character(char **s, char **s2, t_picture *data)
 {
+
     if (check_wall(s2))
         ft_perror("Wall Is Not Valid\n");
-    if (check_player_pos(s, data->inf) || character(s2) || check_color(s, data) || check_text_ext(s, data)) // add texture handling
+    if (/*check_player_pos(s, data->inf) || character(s2) || check_color(s, data) ||*/ check_text_ext(s, data)) // add texture handling
     {
-        if (check_player_pos(s, data->inf))
-            ft_perror("Issue In Player\n");
-        if (character(s2))
-            ft_perror("Character Is Not Valid\n");
+        printf ("here\n");
+        // if (check_player_pos(s, data->inf))
+        //     ft_perror("Issue In Player\n");
+        // if (character(s2))
+        //     ft_perror("Character Is Not Valid\n");
     }
     data->i = -1;
     if(test(data, s))
