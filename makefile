@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ayylaaba <ayylaaba@student.42.fr>          +#+  +:+       +#+         #
+#    By: mhassani <mhassani@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/14 19:02:08 by ayylaaba          #+#    #+#              #
-#    Updated: 2023/08/19 17:41:52 by ayylaaba         ###   ########.fr        #
+#    Updated: 2023/08/20 23:29:11 by mhassani         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ CC = clang
 
 MLX_FLAGS = -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
 
-CFLAGS = -fsanitize=address -g3 #-Wall -Wextra -Werror 
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
 
 SRCS = 	main.c \
 		get_next_line.c	\
@@ -34,7 +34,6 @@ SRCS = 	main.c \
 		move_player.c \
 		intersection.c \
 		draw_texture.c \
-		draw_rays.c \
 		initializer.c \
 		check_errors.c \
 		helper.c \
@@ -42,6 +41,7 @@ SRCS = 	main.c \
 		check_errors2.c \
 		handle_keys.c \
 		move_player2.c \
+		parsing_helper.c \
 
 OBJ = ${SRCS:.c=.o}
 #OBJBONUS = ${BONUS:.c=.o}
